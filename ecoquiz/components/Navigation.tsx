@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Recycle, LayoutDashboard, Brain, User } from "lucide-react";
+import { Recycle, LayoutDashboard, Brain, User, Trophy } from "lucide-react";
 import type { AppUser } from "@/lib/auth";
 import { SignOutButton } from "@/components/SignOutButton";
 
@@ -63,6 +63,7 @@ export function AppHeader({ user, landing = false }: { user?: AppUser | null; la
   const navLinks = [
     { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
     { href: "/quiz", label: "Quiz Modes", icon: Brain },
+    { href: "/leaderboard", label: "Leaderboard", icon: Trophy },
     { href: "/profile", label: "My Profile", icon: User },
   ];
 
@@ -163,6 +164,7 @@ export function MobileNavigation() {
   const navLinks = [
     { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
     { href: "/quiz", label: "Quiz", icon: Brain },
+    { href: "/leaderboard", label: "Ranks", icon: Trophy },
     { href: "/profile", label: "Profile", icon: User },
   ];
 
