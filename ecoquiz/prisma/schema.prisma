@@ -1,0 +1,60 @@
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model UserProfile {
+  id        String        @id @default(uuid())
+  supabaseId String       @unique
+  name      String?
+  avatarUrl String?
+  email     String?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  attempts  QuizAttempt[]
+
+  @@index([supabaseId])
+}
+
+model QuizAttempt {
+  id             String              @id @default(uuid())
+  userId         String
+  user           UserProfile         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quizMode       String              // "myth_vs_facts" | "general"
+  category       String              // "general" | "device_based" | "environmental" | "mixed"
+  difficulty     String              // "easy" | "medium" | "hard" | "mixed"
+  totalQuestions Int
+  correctAnswers Int                 @default(0)
+  incorrectAnswers Int               @default(0)
+  skippedAnswers Int                 @default(0)
+  scorePercentage Float              @default(0.0)
+  timeTakenSec   Int?
+  completed      Boolean             @default(false)
+  createdAt      DateTime            @default(now())
+  completedAt    DateTime?
+  answers        QuizAttemptAnswer[]
+
+  @@index([userId])
+  @@index([createdAt])
+}
+
+model QuizAttemptAnswer {
+  id             String      @id @default(uuid())
+  attemptId      String
+  attempt        QuizAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  questionId     String
+  questionText   String
+  selectedAnswer String?
+  correctAnswer  String
+  explanation    String
+  optionsSnapshot String     // JSON stringified array of options
+  isCorrect      Boolean     @default(false)
+  createdAt      DateTime    @default(now())
+
+  @@index([attemptId])
+}
