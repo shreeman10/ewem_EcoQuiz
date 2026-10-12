@@ -6,11 +6,6 @@ import { createQuizAttempt } from "@/lib/actions";
 import {
   Brain,
   AlertTriangle,
-  Play,
-  Sliders,
-  Timer,
-  CheckCircle,
-  HelpCircle,
   ArrowRight,
 } from "lucide-react";
 
@@ -19,11 +14,7 @@ export function QuizSetup({ initialMode }: { initialMode?: string }) {
   const [mode, setMode] = useState<"myth_vs_facts" | "general">(
     initialMode === "myth_vs_facts" ? "myth_vs_facts" : "general"
   );
-  const [category, setCategory] = useState<"general" | "device_based" | "environmental" | "mixed">("mixed");
-  const [difficulty, setDifficulty] = useState<"easy" | "medium" | "hard" | "mixed">("mixed");
-  const [limit, setLimit] = useState<number>(10);
-  const [instantFeedback, setInstantFeedback] = useState<boolean>(true);
-  const [timed, setTimed] = useState<boolean>(false);
+  const [difficulty, setDifficulty] = useState<"easy" | "medium" | "hard">("medium");
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -33,11 +24,11 @@ export function QuizSetup({ initialMode }: { initialMode?: string }) {
     try {
       const result = await createQuizAttempt({
         mode,
-        category,
+        category: "mixed",
         difficulty,
-        limit,
-        instantFeedback,
-        timed,
+        limit: 10,
+        instantFeedback: true,
+        timed: false,
       });
 
       // Store in sessionStorage for fast client hydration
@@ -46,8 +37,8 @@ export function QuizSetup({ initialMode }: { initialMode?: string }) {
       }
 
       router.push(`/quiz/play/${result.attemptId}`);
-    } catch (err: any) {
-      setError(err.message || "Failed to start quiz. Please try again.");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Failed to start quiz. Please try again.");
       setLoading(false);
     }
   };
@@ -110,50 +101,21 @@ export function QuizSetup({ initialMode }: { initialMode?: string }) {
         </div>
       </div>
 
-      {/* Category selection */}
-      <div>
-        <label className="block text-sm font-semibold text-slate-300 mb-3">
-          2. Category Focus
-        </label>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-          {[
-            { id: "mixed", label: "Mixed (All)" },
-            { id: "general", label: "General Principles" },
-            { id: "device_based", label: "Device-Specific" },
-            { id: "environmental", label: "Environmental Impact" },
-          ].map((cat) => (
-            <button
-              key={cat.id}
-              type="button"
-              onClick={() => setCategory(cat.id as any)}
-              className={`p-3 rounded-xl border text-xs font-semibold transition ${
-                category === cat.id
-                  ? "border-emerald-500 bg-emerald-500/15 text-emerald-300"
-                  : "border-white/10 bg-slate-900/60 text-slate-400 hover:text-white"
-              }`}
-            >
-              {cat.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
       {/* Difficulty selection */}
       <div>
         <label className="block text-sm font-semibold text-slate-300 mb-3">
           3. Difficulty Level
         </label>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+        <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
           {[
-            { id: "mixed", label: "Balanced Mix" },
-            { id: "easy", label: "Easy (Foundations)" },
-            { id: "medium", label: "Medium (Applied)" },
-            { id: "hard", label: "Hard (Expert)" },
+            { id: "easy", label: "Easy" },
+            { id: "medium", label: "Medium" },
+            { id: "hard", label: "Hard" },
           ].map((d) => (
             <button
               key={d.id}
               type="button"
-              onClick={() => setDifficulty(d.id as any)}
+              onClick={() => setDifficulty(d.id as "easy" | "medium" | "hard")}
               className={`p-3 rounded-xl border text-xs font-semibold transition ${
                 difficulty === d.id
                   ? "border-emerald-500 bg-emerald-500/15 text-emerald-300"
@@ -163,58 +125,6 @@ export function QuizSetup({ initialMode }: { initialMode?: string }) {
               {d.label}
             </button>
           ))}
-        </div>
-      </div>
-
-      {/* Question count */}
-      <div>
-        <label className="block text-sm font-semibold text-slate-300 mb-3">
-          4. Number of Questions
-        </label>
-        <div className="grid grid-cols-4 gap-2.5">
-          {[5, 10, 15, 20].map((num) => (
-            <button
-              key={num}
-              type="button"
-              onClick={() => setLimit(num)}
-              className={`p-3 rounded-xl border text-xs font-semibold transition ${
-                limit === num
-                  ? "border-emerald-500 bg-emerald-500/15 text-emerald-300"
-                  : "border-white/10 bg-slate-900/60 text-slate-400 hover:text-white"
-              }`}
-            >
-              {num} Questions
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Experience preferences */}
-      <div className="rounded-2xl border border-white/10 bg-slate-900/40 p-4 space-y-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <div className="text-sm font-semibold text-white">Instant Explanations</div>
-            <div className="text-xs text-slate-400">Reveal correct answer and educational insight right after selecting</div>
-          </div>
-          <input
-            type="checkbox"
-            checked={instantFeedback}
-            onChange={(e) => setInstantFeedback(e.target.checked)}
-            className="h-5 w-5 accent-emerald-500 rounded cursor-pointer"
-          />
-        </div>
-
-        <div className="flex items-center justify-between border-t border-white/5 pt-4">
-          <div>
-            <div className="text-sm font-semibold text-white">Timed Challenge (30s per question)</div>
-            <div className="text-xs text-slate-400">Adds an optional timer countdown for quick-thinking training</div>
-          </div>
-          <input
-            type="checkbox"
-            checked={timed}
-            onChange={(e) => setTimed(e.target.checked)}
-            className="h-5 w-5 accent-emerald-500 rounded cursor-pointer"
-          />
         </div>
       </div>
 
@@ -235,7 +145,7 @@ export function QuizSetup({ initialMode }: { initialMode?: string }) {
           <span>Generating Randomized Quiz...</span>
         ) : (
           <>
-            <span>Launch Quiz ({limit} Questions)</span>
+            <span>Launch Quiz (10 Questions)</span>
             <ArrowRight className="h-4 w-4" />
           </>
         )}

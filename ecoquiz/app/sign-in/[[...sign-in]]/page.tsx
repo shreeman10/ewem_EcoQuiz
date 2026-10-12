@@ -26,15 +26,15 @@ export default function SignInPage() {
         setError(error.message);
         setLoading(false);
       }
-    } catch (err: any) {
-      setError(err?.message || "Failed to initiate sign in");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Failed to initiate sign in");
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#090d16] flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-md text-center space-y-6">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-black p-4">
+      <div className="w-full max-w-md text-center">
         {/* Brand */}
         <Link href="/" className="inline-flex items-center gap-2.5 transition hover:opacity-90">
           <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-400 to-emerald-600 text-slate-950 shadow-lg shadow-emerald-500/20">
@@ -45,16 +45,12 @@ export default function SignInPage() {
           </span>
         </Link>
 
-        <div>
-          <h1 className="text-xl font-bold text-white">Sign In to E-Waste IQ</h1>
-          <p className="text-xs text-slate-400 mt-1">Google OAuth is the designated single sign-in method.</p>
-        </div>
+        <h1 className="mt-8 text-2xl font-semibold text-white">Sign in</h1>
 
-        {/* Supabase Google OAuth Container */}
-        <div className="rounded-2xl border border-white/10 bg-slate-900/80 p-8 shadow-2xl flex flex-col items-center">
-          <div className="w-full space-y-4">
-            <p className="text-xs text-slate-300">
-              Sign in securely using your Google account to save quiz progress, unlock achievement badges, and track your performance trends.
+        <div className="mt-6 flex flex-col items-center rounded-2xl border border-white/10 bg-white/[0.05] p-7 shadow-2xl shadow-black/40 backdrop-blur-xl">
+          <div className="w-full space-y-5">
+            <p className="text-sm text-slate-400">
+              Sign in securely with Google.
             </p>
 
             {error && (
@@ -67,7 +63,7 @@ export default function SignInPage() {
               type="button"
               onClick={handleGoogleSignIn}
               disabled={loading}
-              className="w-full inline-flex items-center justify-center gap-3 rounded-xl bg-white px-5 py-3.5 text-sm font-bold text-slate-900 hover:bg-slate-100 disabled:opacity-60 transition shadow-md cursor-pointer"
+              className="inline-flex w-full cursor-pointer items-center justify-center gap-3 rounded-xl border border-white/15 bg-white px-5 py-3.5 text-sm font-semibold text-slate-950 shadow-lg shadow-black/20 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-60"
             >
               <svg className="h-5 w-5 shrink-0" viewBox="0 0 24 24">
                 <path
@@ -87,18 +83,8 @@ export default function SignInPage() {
                   d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
                 />
               </svg>
-              <span>{loading ? "Connecting to Google..." : "Continue with Google"}</span>
+              <span>{loading ? "Signing in..." : "Sign in with Google"}</span>
             </button>
-
-            {/* Direct dashboard shortcut for testing / guest review */}
-            <div className="pt-2 border-t border-white/5">
-              <Link
-                href="/dashboard"
-                className="text-xs text-slate-400 hover:text-emerald-400 transition"
-              >
-                Continue to Dashboard as Guest →
-              </Link>
-            </div>
           </div>
         </div>
       </div>

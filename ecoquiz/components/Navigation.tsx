@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Recycle, LayoutDashboard, Brain, User, Settings } from "lucide-react";
+import { Recycle, LayoutDashboard, Brain, User } from "lucide-react";
 import type { AppUser } from "@/lib/auth";
 import { SignOutButton } from "@/components/SignOutButton";
 
@@ -51,7 +51,7 @@ export function AppHeader({ user, landing = false }: { user?: AppUser | null; la
           </Link>
           <Link
             href="/sign-in"
-            className="rounded-full border border-white/25 px-5 py-2 text-sm text-white transition hover:bg-white/10"
+            className="rounded-full bg-white px-6 py-2.5 text-sm font-semibold text-black shadow-lg shadow-black/25 transition hover:bg-emerald-300 hover:shadow-emerald-300/20 md:px-7 md:py-3 md:text-base"
           >
             Log In
           </Link>
@@ -64,11 +64,10 @@ export function AppHeader({ user, landing = false }: { user?: AppUser | null; la
     { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
     { href: "/quiz", label: "Quiz Modes", icon: Brain },
     { href: "/profile", label: "My Profile", icon: User },
-    { href: "/settings", label: "Settings", icon: Settings },
   ];
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-white/10 bg-[#090d16]/85 backdrop-blur-md">
+    <header className="sticky top-0 z-40 w-full border-y border-white/15 bg-[#111827]/80 shadow-[0_8px_30px_rgba(0,0,0,0.28)] backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4 sm:px-6">
         {/* Brand */}
         <Link href="/" className="flex items-center gap-2.5 transition hover:opacity-90">
@@ -165,7 +164,6 @@ export function MobileNavigation() {
     { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
     { href: "/quiz", label: "Quiz", icon: Brain },
     { href: "/profile", label: "Profile", icon: User },
-    { href: "/settings", label: "Settings", icon: Settings },
   ];
 
   return (

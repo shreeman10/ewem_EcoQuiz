@@ -26,7 +26,7 @@ Built with Next.js (App Router), TypeScript, Tailwind CSS, Prisma ORM, **Supabas
 
 4. **Supabase Authentication (Google OAuth Only)**:
    - Configured with Supabase SSR (`@supabase/ssr`) and Google OAuth.
-   - Protected user routes: `/dashboard`, `/quiz`, `/profile`, and `/settings`.
+   - Protected user routes: `/dashboard`, `/quiz`, and `/profile`.
    - Automatic OAuth callback handler (`/auth/callback`).
 
 5. **Persistence & Performance Tracking (Supabase PostgreSQL)**:
