@@ -169,7 +169,7 @@ export function MobileNavigation() {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 border-t border-white/10 bg-[#090d16]/95 py-2 px-3 backdrop-blur-lg md:hidden safe-area-pb">
+    <nav className="fixed bottom-0 left-0 right-0 z-40 border-t border-white/10 bg-[#090d16]/95 px-3 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] backdrop-blur-lg md:hidden">
       <div className="flex justify-around items-center">
         {navLinks.map((item) => {
           const Icon = item.icon;
